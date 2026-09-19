@@ -1,0 +1,37 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Lucide via Iconify, original 24 × 24 view boxes. See Assets/Icons/LICENSE.txt. -->
+    <Geometry x:Key="SettingsIcon">M14 17H5M19 7h-9 M14,17 A3,3 0 1 0 20,17 A3,3 0 1 0 14,17 Z M4,7 A3,3 0 1 0 10,7 A3,3 0 1 0 4,7 Z</Geometry>
+    <Geometry x:Key="AppearanceIcon">M12 22a1 1 0 0 1 0-20a10 9 0 0 1 10 9a5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z M13,6.5 A0.5,0.5 0 1 0 14,6.5 A0.5,0.5 0 1 0 13,6.5 Z M17,10.5 A0.5,0.5 0 1 0 18,10.5 A0.5,0.5 0 1 0 17,10.5 Z M6,12.5 A0.5,0.5 0 1 0 7,12.5 A0.5,0.5 0 1 0 6,12.5 Z M8,7.5 A0.5,0.5 0 1 0 9,7.5 A0.5,0.5 0 1 0 8,7.5 Z</Geometry>
+    <Geometry x:Key="CaptureIcon">M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2</Geometry>
+    <Geometry x:Key="PinIcon">M12 17v5M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4a1 1 0 0 1 1 1z</Geometry>
+    <Geometry x:Key="SaveIcon">M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7M7 3v4a1 1 0 0 0 1 1h7</Geometry>
+    <Geometry x:Key="AnnotationIcon">M13 21h8M15 5l4 4m2.174-2.188a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z</Geometry>
+    <Geometry x:Key="KeyboardIcon">M10 8h.01M12 12h.01M14 8h.01M16 12h.01M18 8h.01M6 8h.01M7 16h10m-9-4h.01 M4,4 H20 Q22,4 22,6 V18 Q22,20 20,20 H4 Q2,20 2,18 V6 Q2,4 4,4 Z</Geometry>
+    <Geometry x:Key="MouseIcon">M12,2 H12 Q19,2 19,9 V15 Q19,22 12,22 H12 Q5,22 5,15 V9 Q5,2 12,2 Z M12 6v4</Geometry>
+    <Geometry x:Key="TransferIcon">m3 16l4 4l4-4m-4 4V4m14 4l-4-4l-4 4m4-4v16</Geometry>
+    <Geometry x:Key="InfoIcon">M2,12 A10,10 0 1 0 22,12 A10,10 0 1 0 2,12 Z M12 16v-4m0-4h.01</Geometry>
+    <Geometry x:Key="UndoIcon">M9 14L4 9l5-5 M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11</Geometry>
+    <Geometry x:Key="RedoIcon">m15 14l5-5l-5-5 M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13</Geometry>
+    <Geometry x:Key="SelectIcon">M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z</Geometry>
+    <Geometry x:Key="RectangleIcon">M5,3 H19 Q21,3 21,5 V19 Q21,21 19,21 H5 Q3,21 3,19 V5 Q3,3 5,3 Z</Geometry>
+    <Geometry x:Key="EllipseIcon">M2,12 A10,10 0 1 0 22,12 A10,10 0 1 0 2,12 Z</Geometry>
+    <Geometry x:Key="ArrowIcon">M13 5h6v6m0-6L5 19</Geometry>
+    <Geometry x:Key="PencilIcon">M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497zM15 5l4 4</Geometry>
+    <Geometry x:Key="TextIcon">M12 4v16M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2M9 20h6</Geometry>
+    <Geometry x:Key="RedactIcon">M4,6 H20 Q22,6 22,8 V16 Q22,18 20,18 H4 Q2,18 2,16 V8 Q2,6 4,6 Z M12 12h.01M17 12h.01M7 12h.01</Geometry>
+    <Geometry x:Key="CopyIcon">M10,8 H20 Q22,8 22,10 V20 Q22,22 20,22 H10 Q8,22 8,20 V10 Q8,8 10,8 Z M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2</Geometry>
+    <Geometry x:Key="OpacityIcon">M8,9 A7,7 0 1 0 22,9 A7,7 0 1 0 8,9 Z M2,15 A7,7 0 1 0 16,15 A7,7 0 1 0 2,15 Z</Geometry>
+    <Geometry x:Key="CheckIcon">M20 6L9 17l-5-5</Geometry>
+    <Geometry x:Key="CloseIcon">M18 6L6 18M6 6l12 12</Geometry>
+    <Geometry x:Key="ClipboardIcon">M9,2 H15 Q16,2 16,3 V5 Q16,6 15,6 H9 Q8,6 8,5 V3 Q8,2 9,2 Z M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2</Geometry>
+    <Geometry x:Key="HistoryIcon">M3 12a9 9 0 1 0 9-9a9.75 9.75 0 0 0-6.74 2.74L3 8 M3 3v5h5m4-1v5l4 2</Geometry>
+    <Geometry x:Key="LeafIcon">M11 20a10 10 0 0 0 10-10a25.9 25.9 0 0 0-1.04-7.281a1 1 0 0 0-1.755-.325C15.833 5.5 13 5.5 9.8 6.1A7 7 0 0 0 11 20 M2 21a5 5 0 0 1 2.911-4.544C7.613 15.212 8.351 15.24 11 13</Geometry>
+    <Geometry x:Key="ChevronDownIcon">m6 9l6 6l6-6</Geometry>
+    <Geometry x:Key="DownloadIcon">M12 15V3m9 12v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 m7 10l5 5l5-5</Geometry>
+    <Geometry x:Key="UploadIcon">M12 3v12m5-7l-5-5l-5 5m14 7v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4</Geometry>
+    <Geometry x:Key="FolderIcon">m6 14l1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2</Geometry>
+    <Geometry x:Key="VideoIcon">m16 13l5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5 M4,6 H14 Q16,6 16,8 V16 Q16,18 14,18 H4 Q2,18 2,16 V8 Q2,6 4,6 Z</Geometry>
+    <Geometry x:Key="OcrIcon">M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2m4-9h8m-8 4h10M7 16h6</Geometry>
+    <Geometry x:Key="TableIcon">M3 9h18M9 3v18 M5,3 H19 Q21,3 21,5 V19 Q21,21 19,21 H5 Q3,21 3,19 V5 Q3,3 5,3 Z</Geometry>
+    <Geometry x:Key="LongCaptureIcon">m7 15l5 5l5-5M7 9l5-5l5 5</Geometry>
+</ResourceDictionary>

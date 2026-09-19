@@ -1,0 +1,9 @@
+MiSans
+
+Copyright © 2020-2025 Beijing Xiaomi Mobile Software Co.,Ltd. All Rights Reserved.
+Font manufacturer: Hanyi Fonts / 汉仪字库.
+Official font site: https://hyperos.mi.com/font/
+
+MiSans-Regular.otf and MiSans-Semibold.otf were supplied by the workspace owner.
+The files are bundled unmodified, with their full glyph sets and original metadata.
+MiSans is distributed under its own font terms, not the Lucide icon license.

@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CaptureDesk.App/CaptureDesk.App.csproj" />
+    <Project Path="src/CaptureDesk.Core/CaptureDesk.Core.csproj" />
+    <Project Path="src/CaptureDesk.Media/CaptureDesk.Media.csproj" />
+    <Project Path="src/CaptureDesk.Native/CaptureDesk.Native.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CaptureDesk.Tests/CaptureDesk.Tests.csproj" />
+  </Folder>
+</Solution>

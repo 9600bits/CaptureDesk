@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <Resource Include="Assets\Fonts\*.otf" />
+    <Resource Include="Assets\Brand\CaptureDesk.png" />
+    <Resource Include="Assets\Brand\CaptureDesk.ico" />
+    <None Update="Assets\Icons\LICENSE.txt" CopyToPublishDirectory="PreserveNewest" TargetPath="licenses\Lucide-LICENSE.txt" />
+    <None Update="Assets\Fonts\NOTICE.txt" CopyToPublishDirectory="PreserveNewest" TargetPath="licenses\MiSans-NOTICE.txt" />
+    <Using Remove="System.Drawing" />
+    <Using Remove="System.Windows.Forms" />
+    <ProjectReference Include="..\CaptureDesk.Core\CaptureDesk.Core.csproj" />
+    <ProjectReference Include="..\CaptureDesk.Native\CaptureDesk.Native.csproj" />
+    <ProjectReference Include="..\CaptureDesk.Media\CaptureDesk.Media.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <Version>0.4</Version>
+    <ApplicationIcon>Assets\Brand\CaptureDesk.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- WPF owns application startup and DPI; WinForms is used only for the tray. -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <Target Name="OmitPublishDebugSymbols" AfterTargets="ComputeFilesToPublish">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.Extension)' == '.pdb'" />
+    </ItemGroup>
+  </Target>
+
+</Project>
