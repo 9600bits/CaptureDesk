@@ -13,6 +13,17 @@ public static class TableRecognition
 {
     public static async Task<TableResult> RecognizeAsync(byte[] png, string language, CancellationToken token = default)
     {
+        using var budget = CancellationTokenSource.CreateLinkedTokenSource(token);
+        budget.CancelAfter(TimeSpan.FromSeconds(30));
+        try { return await RecognizeCoreAsync(png, language, budget.Token); }
+        catch (OperationCanceledException) when (!token.IsCancellationRequested)
+        {
+            return new(FeatureAvailability.Failed, new DataTable(), "表格识别已达到 30 秒上限，请缩小范围或减少空白单元格后重试。");
+        }
+    }
+
+    private static async Task<TableResult> RecognizeCoreAsync(byte[] png, string language, CancellationToken token)
+    {
         var source = PngCodec.Decode(png);
         var layout = await new LocalRecognitionProvider().RecognizeLayoutAsync(new RecognitionRequest(png, language), token);
         if (layout.Status != FeatureAvailability.Available) return new(layout.Status, new DataTable(), layout.Detail);

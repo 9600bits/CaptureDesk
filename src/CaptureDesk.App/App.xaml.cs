@@ -10,7 +10,9 @@ public partial class App : WpfApplication
 {
     private System.Windows.Forms.NotifyIcon? _trayIcon;
     private System.Drawing.Icon? _brandIcon;
+    private SingleInstanceCoordinator? _singleInstance;
     private bool _diagnostic;
+    private string? _singleInstanceProbePath;
     public static bool IsExiting { get; private set; }
     public static AppSettings Settings { get; private set; } = new();
     public static IConfigStore ConfigStore { get; } = new JsonConfigStore();
@@ -43,11 +45,41 @@ public partial class App : WpfApplication
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        _diagnostic = e.Args.Any(arg => arg.StartsWith("--snapshot", StringComparison.Ordinal) || arg == "--verify-ui");
+        var probeIndex = Array.IndexOf(e.Args, "--verify-single-instance");
+        _singleInstanceProbePath = probeIndex >= 0 && e.Args.Length > probeIndex + 1 ? e.Args[probeIndex + 1] : null;
+        var isolatedDiagnostic = e.Args.Any(arg => arg.StartsWith("--snapshot", StringComparison.Ordinal) || arg == "--verify-ui");
+        _diagnostic = isolatedDiagnostic || _singleInstanceProbePath is not null;
+        if (!isolatedDiagnostic)
+        {
+            _singleInstance = SingleInstanceCoordinator.TryAcquire(e.Args,
+                arguments => Dispatcher.BeginInvoke(new Action(() => ActivateExistingInstance(arguments))), out var notified);
+            if (_singleInstance is null)
+            {
+                ShutdownMode = ShutdownMode.OnExplicitShutdown;
+                if (_singleInstanceProbePath is not null)
+                {
+                    File.AppendAllText(_singleInstanceProbePath, $"SECOND:{notified}{Environment.NewLine}");
+                    Shutdown(notified ? 0 : 1);
+                    return;
+                }
+                MessageBox.Show(notified
+                    ? "CaptureDesk 已在运行，现有窗口已被唤醒。"
+                    : "CaptureDesk 已在运行，但暂时无法唤醒现有窗口。请从任务栏托盘打开。",
+                    "CaptureDesk", MessageBoxButton.OK, MessageBoxImage.Information);
+                Shutdown(0);
+                return;
+            }
+        }
         Settings = _diagnostic ? new AppSettings() : ConfigStore.Load();
         Theme.Apply(Settings.ThemeMode == "深色");
         History = new MemoryHistoryStore(Settings.HistoryLimit);
         MainWindowInstance = new MainWindow(!_diagnostic);
+        if (_singleInstanceProbePath is not null)
+        {
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            File.WriteAllText(_singleInstanceProbePath, $"READY{Environment.NewLine}");
+            return;
+        }
         if (e.Args.Contains("--verify-ui"))
         {
             ShutdownMode = ShutdownMode.OnExplicitShutdown;
@@ -106,6 +138,20 @@ public partial class App : WpfApplication
         _trayIcon.DoubleClick += (_, _) => Dispatcher.Invoke(() => { MainWindowInstance.Show(); MainWindowInstance.Activate(); });
         if (e.Args.Contains("--background")) MainWindowInstance.Hide();
         if (e.Args.Contains("--settings")) Dispatcher.BeginInvoke(new Action(MainWindowInstance.OpenSettings));
+        if (ConfigStore.LastLoadWarning is { } warning)
+            Dispatcher.BeginInvoke(new Action(() => MessageBox.Show(MainWindowInstance, warning, "配置已恢复", MessageBoxButton.OK, MessageBoxImage.Warning)));
+    }
+
+    private void ActivateExistingInstance(string[] arguments)
+    {
+        if (_singleInstanceProbePath is not null)
+        {
+            File.AppendAllText(_singleInstanceProbePath, $"ACTIVATED:{string.Join('|', arguments)}{Environment.NewLine}");
+            Shutdown(0);
+            return;
+        }
+        MainWindowInstance.ShowAndActivate();
+        if (arguments.Contains("--settings")) MainWindowInstance.OpenSettings();
     }
 
     protected override void OnExit(ExitEventArgs e)
@@ -118,6 +164,7 @@ public partial class App : WpfApplication
         }
         if (_trayIcon is not null) { _trayIcon.Visible = false; _trayIcon.Dispose(); }
         _brandIcon?.Dispose();
+        _singleInstance?.Dispose();
         base.OnExit(e);
     }
 }

@@ -219,17 +219,11 @@ public partial class EditorWindow : Window
     private void Pin_Click(object s, RoutedEventArgs e) => RunAction(() => new PinWindow(RenderDocument()).Show());
     private void Save_Click(object s, RoutedEventArgs e) => RunAction(() =>
     {
-        var jpeg = App.Settings.SaveFormat == "JPEG";
-        var dialog = new Microsoft.Win32.SaveFileDialog
-        {
-            Filter = "PNG 图像|*.png|JPEG 图像|*.jpg", FilterIndex = jpeg ? 2 : 1,
-            DefaultExt = jpeg ? ".jpg" : ".png", AddExtension = true,
-            InitialDirectory = Directory.Exists(App.Settings.DefaultSaveFolder) ? App.Settings.DefaultSaveFolder : "",
-            FileName = $"CaptureDesk_{DateTime.Now:yyyyMMdd_HHmmss}"
-        };
-        if (dialog.ShowDialog(this) != true) return;
-        PngCodec.Save(RenderDocument(), dialog.FileName, App.Settings.ImageQuality);
-        ToolStatus.Text = $"已保存：{dialog.FileName}";
+        var path = SaveDialogHelper.ShowImage(this, $"CaptureDesk_{DateTime.Now:yyyyMMdd_HHmmss}",
+            Directory.Exists(App.Settings.DefaultSaveFolder) ? App.Settings.DefaultSaveFolder : "");
+        if (path is null) return;
+        PngCodec.Save(RenderDocument(), path, App.Settings.ImageQuality);
+        ToolStatus.Text = $"已保存：{path}";
     });
     private void RunAction(Action action)
     {

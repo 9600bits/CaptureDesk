@@ -75,8 +75,8 @@ public sealed class HistoryWindow : Window
         toolbar.Children.Add(WorkflowUi.Button("复制", () => WorkflowUi.Try(this, () => Clipboard.SetImage(editor.RenderDocument()))));
         toolbar.Children.Add(WorkflowUi.Button("保存", () => WorkflowUi.Try(this, () =>
         {
-            var dialog = new Microsoft.Win32.SaveFileDialog { Filter = "PNG 图像|*.png|JPEG 图像|*.jpg", FileName = "截图.png" };
-            if (dialog.ShowDialog(this) == true) PngCodec.Save(editor.RenderDocument(), dialog.FileName);
+            var path = SaveDialogHelper.ShowImage(this, "截图");
+            if (path is not null) PngCodec.Save(editor.RenderDocument(), path, App.Settings.ImageQuality);
         })));
         DockPanel.SetDock(toolbar, Dock.Top); layout.Children.Add(toolbar);
         layout.Children.Add(new Viewbox { Child = editor.CanvasHost, Stretch = Stretch.Uniform });

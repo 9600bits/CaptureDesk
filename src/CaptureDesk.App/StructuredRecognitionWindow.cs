@@ -100,9 +100,9 @@ public sealed class StructuredRecognitionWindow : Window
     private void Save() => WorkflowUi.Try(this, () =>
     {
         CommitGrid();
-        var dialog = new Microsoft.Win32.SaveFileDialog { Filter = "Excel 工作簿|*.xlsx|CSV 表格|*.csv", FileName = "表格.xlsx" };
-        if (dialog.ShowDialog(this) != true) return;
-        TableExport.Save(_table!, dialog.FileName);
+        var path = SaveDialogHelper.ShowTable(this, "表格");
+        if (path is null) return;
+        TableExport.Save(_table!, path);
         _status.Text = "已保存";
     });
 }

@@ -85,6 +85,14 @@ public partial class MainWindow : Window
     }
     private void Settings_Click(object sender, RoutedEventArgs e) => OpenSettings();
     public void OpenHistory() => new HistoryWindow().Show();
+    internal void ShowAndActivate()
+    {
+        Show();
+        if (WindowState == WindowState.Minimized) WindowState = WindowState.Normal;
+        Activate();
+        var handle = new WindowInteropHelper(this).Handle;
+        if (handle != IntPtr.Zero) SetForegroundWindow(handle);
+    }
     private void History_Click(object sender, RoutedEventArgs e) => OpenHistory();
     private void Clipboard_Click(object sender, RoutedEventArgs e)
     {
@@ -99,4 +107,5 @@ public partial class MainWindow : Window
     }
     [DllImport("user32.dll")] private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint modifiers, uint virtualKey);
     [DllImport("user32.dll")] private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+    [DllImport("user32.dll")] private static extern bool SetForegroundWindow(IntPtr hWnd);
 }

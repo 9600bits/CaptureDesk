@@ -27,8 +27,8 @@ public partial class PinWindow : Window
         Add("原始尺寸", () => { if (!IsLocked) { Width = Math.Max(MinWidth, _source.PixelWidth + 14); Height = Math.Max(MinHeight, _source.PixelHeight + 14); } });
         Add("保存图像…", () => WorkflowUi.Try(this, () =>
         {
-            var dialog = new Microsoft.Win32.SaveFileDialog { Filter = "PNG 图像|*.png|JPEG 图像|*.jpg", FileName = "贴图.png" };
-            if (dialog.ShowDialog(this) == true) PngCodec.Save(_source, dialog.FileName, App.Settings.ImageQuality);
+            var path = SaveDialogHelper.ShowImage(this, "贴图");
+            if (path is not null) PngCodec.Save(_source, path, App.Settings.ImageQuality);
         }));
         Add("复制图像", () => Copy_Click(this, new RoutedEventArgs()));
         menu.Items.Add(new Separator());

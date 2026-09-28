@@ -59,5 +59,10 @@ public interface IRecognitionProvider { Task<RecognitionResult> RecognizeAsync(R
 public interface ITranslationProvider { Task<TranslationResult> TranslateAsync(TranslationRequest request, CancellationToken cancellationToken = default); }
 public interface IExportService { Task ExportAsync(byte[] pngBytes, string outputPath, CancellationToken cancellationToken = default); }
 public interface IHotkeyService { void Register(string gesture, Action callback); void UnregisterAll(); }
-public interface IConfigStore { AppSettings Load(); void Save(AppSettings settings); }
+public interface IConfigStore
+{
+    string? LastLoadWarning { get; }
+    AppSettings Load();
+    void Save(AppSettings settings);
+}
 public interface IHistoryStore { void Add(CaptureResult result); IReadOnlyList<CaptureResult> GetRecent(); }

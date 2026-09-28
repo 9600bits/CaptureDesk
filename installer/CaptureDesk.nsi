@@ -35,6 +35,7 @@ VIAddVersionKey "LegalCopyright" "CaptureDesk contributors"
 
 Function .onInit
   SetShellVarContext current
+  Call CheckCaptureDeskRunning
   ${IfNot} ${RunningX64}
     MessageBox MB_ICONSTOP "CaptureDesk 需要 64 位 Windows 10 或 Windows 11。"
     Abort
@@ -44,6 +45,33 @@ Function .onInit
   ${If} $0 < 10
   ${OrIf} $1 < 19045
     MessageBox MB_ICONSTOP "CaptureDesk 需要 Windows 10 22H2 或更新版本。"
+    Abort
+  ${EndIf}
+FunctionEnd
+
+Function CheckCaptureDeskRunning
+check_running:
+  System::Call 'kernel32::OpenMutexW(i 0x00100000, i 0, w "Global\CaptureDesk.SingleInstance") p.r0'
+  ${If} $0 != 0
+    System::Call 'kernel32::CloseHandle(p r0)'
+    MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION "CaptureDesk 正在运行。请从任务栏托盘退出程序，然后点击“重试”。" /SD IDCANCEL IDRETRY check_running
+    SetErrorLevel 2
+    Abort
+  ${EndIf}
+FunctionEnd
+
+Function un.onInit
+  SetShellVarContext current
+  Call un.CheckCaptureDeskRunning
+FunctionEnd
+
+Function un.CheckCaptureDeskRunning
+un_check_running:
+  System::Call 'kernel32::OpenMutexW(i 0x00100000, i 0, w "Global\CaptureDesk.SingleInstance") p.r0'
+  ${If} $0 != 0
+    System::Call 'kernel32::CloseHandle(p r0)'
+    MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION "CaptureDesk 正在运行。请从任务栏托盘退出程序，然后点击“重试”。" /SD IDCANCEL IDRETRY un_check_running
+    SetErrorLevel 2
     Abort
   ${EndIf}
 FunctionEnd

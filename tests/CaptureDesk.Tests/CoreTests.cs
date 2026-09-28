@@ -36,8 +36,54 @@ public sealed class CoreTests
             Assert.Equal(5, loaded.MouseZoomStep);
             Assert.Equal("钴蓝", loaded.AnnotationColor);
             Assert.Equal("C:\\Shots", loaded.DefaultSaveFolder);
+            loaded.HistoryLimit = 20;
+            store.Save(loaded);
+            loaded.HistoryLimit = 30;
+            store.Save(loaded);
+            Assert.Equal(30, store.Load().HistoryLimit);
         }
         finally { if (File.Exists(path)) File.Delete(path); }
+    }
+
+    [Fact]
+    public void JsonConfigStore_RecoversBackupAndPreservesCorruptPrimary()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), $"capture-desk-{Guid.NewGuid():N}");
+        var path = Path.Combine(directory, "settings.json");
+        try
+        {
+            var store = new JsonConfigStore(path);
+            store.Save(new AppSettings { HistoryLimit = 12 });
+            store.Save(new AppSettings { HistoryLimit = 25 });
+            File.WriteAllText(path, "{broken json");
+
+            var loaded = store.Load();
+
+            Assert.Equal(12, loaded.HistoryLimit);
+            Assert.NotNull(store.LastLoadWarning);
+            Assert.Equal("{broken json", File.ReadAllText(path));
+        }
+        finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
+    }
+
+    [Fact]
+    public void JsonConfigStore_PreservesCorruptFileWhenNoBackupExists()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), $"capture-desk-{Guid.NewGuid():N}");
+        var path = Path.Combine(directory, "settings.json");
+        try
+        {
+            Directory.CreateDirectory(directory);
+            File.WriteAllText(path, "not-json");
+            var store = new JsonConfigStore(path);
+
+            var loaded = store.Load();
+
+            Assert.Equal(50, loaded.HistoryLimit);
+            Assert.NotNull(store.LastLoadWarning);
+            Assert.Single(Directory.GetFiles(directory, "settings.json.corrupt-*"));
+        }
+        finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
     }
 
     [Fact]

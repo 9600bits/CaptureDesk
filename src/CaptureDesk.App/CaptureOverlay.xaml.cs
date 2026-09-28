@@ -210,23 +210,17 @@ public partial class CaptureOverlay : Window
         if (CapturedSource is null) return;
         if (OutputAction == "save" && !_selectionOnly)
         {
-            var jpeg = App.Settings.SaveFormat == "JPEG";
-            var dialog = new Microsoft.Win32.SaveFileDialog
-            {
-                Filter = "PNG 图像|*.png|JPEG 图像|*.jpg", FilterIndex = jpeg ? 2 : 1,
-                DefaultExt = jpeg ? ".jpg" : ".png", AddExtension = true,
-                InitialDirectory = System.IO.Directory.Exists(App.Settings.DefaultSaveFolder) ? App.Settings.DefaultSaveFolder : "",
-                FileName = $"CaptureDesk_{DateTime.Now:yyyyMMdd_HHmmss}"
-            };
             var wasTopmost = Topmost;
             try
             {
                 Topmost = false;
-                if (dialog.ShowDialog(this) != true) { OutputAction = "copy"; return; }
-                PngCodec.Save(CapturedSource, dialog.FileName, App.Settings.ImageQuality);
+                var path = SaveDialogHelper.ShowImage(this, $"CaptureDesk_{DateTime.Now:yyyyMMdd_HHmmss}",
+                    System.IO.Directory.Exists(App.Settings.DefaultSaveFolder) ? App.Settings.DefaultSaveFolder : "");
+                if (path is null) return;
+                PngCodec.Save(CapturedSource, path, App.Settings.ImageQuality);
                 OutputAction = "saved";
             }
-            catch (Exception ex) { MessageBox.Show(this, ex.Message, "保存失败"); OutputAction = "copy"; return; }
+            catch (Exception ex) { MessageBox.Show(this, ex.Message, "保存失败"); return; }
             finally { Topmost = wasTopmost; }
         }
         DialogResult = true;
