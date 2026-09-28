@@ -8,12 +8,12 @@ if ((Test-Path $testDir) -or (Test-Path $registry) -or (Test-Path $shortcutFolde
 }
 $settings = Join-Path ([Environment]::GetFolderPath('ApplicationData')) 'CaptureDesk\settings.json'
 $settingsHash = if (Test-Path $settings) { (Get-FileHash $settings).Hash } else { '' }
-$setup = Join-Path $projectRoot 'dist\0.4\release\CaptureDesk-0.4-win-x64-setup.exe'
+$setup = Join-Path $projectRoot 'dist\0.5\release\CaptureDesk-0.5-win-x64-setup.exe'
 $process = Start-Process $setup -ArgumentList "/S /D=$testDir" -WindowStyle Hidden -PassThru
 if (-not $process.WaitForExit(60000) -or $process.ExitCode -ne 0) { throw 'Install failed' }
-if ((Get-ItemProperty $registry).DisplayVersion -ne '0.4') { throw 'Wrong installed version' }
+if ((Get-ItemProperty $registry).DisplayVersion -ne '0.5') { throw 'Wrong installed version' }
 if (-not (Test-Path (Join-Path $shortcutFolder 'CaptureDesk.lnk'))) { throw 'Missing Start Menu shortcut' }
-$payload = Join-Path $projectRoot 'dist\0.4\installer-payload'
+$payload = Join-Path $projectRoot 'dist\0.5\installer-payload'
 foreach ($file in Get-ChildItem $payload -File -Recurse) {
     $installed = Join-Path $testDir ([IO.Path]::GetRelativePath($payload, $file.FullName))
     if ((Get-FileHash $file.FullName).Hash -ne (Get-FileHash $installed).Hash) { throw "Installed file differs: $($file.Name)" }

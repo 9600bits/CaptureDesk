@@ -5,7 +5,7 @@ Unicode True
 !ifndef PAYLOAD
   !error "Pass /DPAYLOAD, /DOUTPUT and /DUNINSTALL_FILES to makensis"
 !endif
-Name "CaptureDesk 0.4"
+Name "CaptureDesk 0.5"
 OutFile "${OUTPUT}"
 InstallDir "$LOCALAPPDATA\Programs\CaptureDesk"
 InstallDirRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CaptureDesk" "InstallLocation"
@@ -13,10 +13,10 @@ RequestExecutionLevel user
 ManifestDPIAware True
 SetCompressor /SOLID lzma
 SetCompressorDictSize 64
-VIProductVersion "0.4.0.0"
+VIProductVersion "0.5.0.0"
 VIAddVersionKey "ProductName" "CaptureDesk"
 VIAddVersionKey "FileDescription" "CaptureDesk 安装程序"
-VIAddVersionKey "FileVersion" "0.4"
+VIAddVersionKey "FileVersion" "0.5"
 VIAddVersionKey "LegalCopyright" "CaptureDesk contributors"
 !define MUI_ICON "..\src\CaptureDesk.App\Assets\Brand\CaptureDesk.ico"
 !define MUI_UNICON "..\src\CaptureDesk.App\Assets\Brand\CaptureDesk.ico"
@@ -84,7 +84,7 @@ Section "CaptureDesk（必需，含 .NET 运行环境）" Main
   CreateDirectory "$SMPROGRAMS\CaptureDesk"
   CreateShortcut "$SMPROGRAMS\CaptureDesk\CaptureDesk.lnk" "$INSTDIR\CaptureDesk.App.exe"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CaptureDesk" "DisplayName" "CaptureDesk"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CaptureDesk" "DisplayVersion" "0.4"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CaptureDesk" "DisplayVersion" "0.5"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CaptureDesk" "Publisher" "CaptureDesk contributors"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CaptureDesk" "InstallLocation" "$INSTDIR"
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\CaptureDesk" "DisplayIcon" "$INSTDIR\CaptureDesk.App.exe"
