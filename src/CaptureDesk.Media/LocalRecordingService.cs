@@ -5,7 +5,7 @@ using CaptureDesk.Native;
 
 namespace CaptureDesk.Media;
 
-// Small offline GIF backend. WGC/MP4 are separate, not advertised by this backend.
+// Local frame journal backend. GIF and Windows H.264 MP4 are exported from the same frames.
 public sealed class LocalRecordingService : IRecordingService, IDisposable
 {
     private readonly object _gate = new();
@@ -111,14 +111,23 @@ public sealed class LocalRecordingService : IRecordingService, IDisposable
                 End: Math.Min(until, i + 1 < _frames.Count ? _frames[i + 1].Time : Math.Max(Duration, frame.Time + 1d / FrameRate))))
             .Where(x => x.End > x.Start).Select(x => (x.Path, Delay: (int)Math.Round(100 * (x.End - x.Start)))).ToArray();
         // Write beside destination; failures/cancellation never replace an existing user file.
-        var temporary = outputPath + "." + Guid.NewGuid().ToString("N") + ".tmp";
+        var extension = Path.GetExtension(outputPath);
+        var temporary = outputPath + "." + Guid.NewGuid().ToString("N") + (extension.Equals(".mp4", StringComparison.OrdinalIgnoreCase) ? ".mp4" : ".tmp");
         try
         {
-            await Task.Run(() =>
+            if (extension.Equals(".gif", StringComparison.OrdinalIgnoreCase))
             {
-                using var stream = File.Create(temporary);
-                GifStreamEncoder.Write(stream, frames, progress, cancellationToken);
-            }, cancellationToken);
+                await Task.Run(() =>
+                {
+                    using var stream = File.Create(temporary);
+                    GifStreamEncoder.Write(stream, frames, progress, cancellationToken);
+                }, cancellationToken);
+            }
+            else if (extension.Equals(".mp4", StringComparison.OrdinalIgnoreCase))
+            {
+                await Mp4StreamEncoder.WriteAsync(temporary, frames, FrameRate, progress, cancellationToken);
+            }
+            else throw new ArgumentException("只支持 GIF 或 MP4 导出。", nameof(outputPath));
             cancellationToken.ThrowIfCancellationRequested();
             File.Move(temporary, outputPath, true);
         }

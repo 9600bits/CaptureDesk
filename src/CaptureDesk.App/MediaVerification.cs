@@ -52,12 +52,21 @@ internal static class MediaVerification
             Require(recorder.Failure is null && !recorder.IsRecording, "Screen recording failed: " + recorder.Failure);
             var path = Path.Combine(directory, "live-recording-test.gif");
             await recorder.ExportAsync(path, null);
+            var mp4Path = Path.Combine(directory, "live-recording-test.mp4");
+            await recorder.ExportAsync(mp4Path, null);
+            Require(new FileInfo(mp4Path).Length > 32, "MP4 export was empty");
+            using (var mp4 = File.OpenRead(mp4Path))
+            {
+                mp4.Position = 4;
+                Span<byte> brand = stackalloc byte[4];
+                Require(mp4.Read(brand) == 4 && brand.SequenceEqual("ftyp"u8), "MP4 container signature missing");
+            }
             using var recovery = LocalRecordingService.Recover(Path.Combine(recorder.RecoveryDirectory!, "frames.tsv"));
             await recovery.ExportAsync(Path.Combine(directory, "recovered-recording-test.gif"), null, start: .1, end: .4);
             // Diagnostic owns only this generated session.
             Directory.Delete(recorder.RecoveryDirectory!, true);
         }).GetAwaiter().GetResult();
-        passed.Add("PASS real desktop GIF recording, pause/resume, recovery and interval export");
+        passed.Add("PASS real desktop recording, MP4/GIF export, pause/resume, recovery and interval export");
 
         var visual = new DrawingVisual();
         using (var drawing = visual.RenderOpen())

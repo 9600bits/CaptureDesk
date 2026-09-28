@@ -45,7 +45,7 @@ public sealed class RecordingRecoveryWindow : Window
     private void Trash() => WorkflowUi.Try(this, () =>
     {
         if (_list.SelectedItem is not Session session) return;
-        if (MessageBox.Show(this, "将这段录制的缓存移到回收站？已导出的 GIF 不受影响。", Title, MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
+        if (MessageBox.Show(this, "将这段录制的缓存移到回收站？已导出的 MP4 / GIF 不受影响。", Title, MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
         var folder = Path.GetDirectoryName(Path.GetFullPath(session.Journal))!;
         if (!string.Equals(Path.GetDirectoryName(folder), Path.GetFullPath(LocalRecordingService.RecoveryRoot), StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException("录制缓存路径无效。");
