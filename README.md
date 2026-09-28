@@ -4,7 +4,7 @@ Windows 截图与标注工具，WPF + .NET 10。
 
 ## 下载与安装
 
-在 [GitHub Releases](https://github.com/9600bits/CaptureDesk/releases) 下载 `CaptureDesk-0.5-win-x64-setup.exe`。
+在 [GitHub Releases](https://github.com/9600bits/CaptureDesk/releases) 下载 `CaptureDesk-0.5.1-win-x64-setup.exe`。
 支持 Windows 10 22H2 / Windows 11 x64，自带 .NET 运行环境，安装和使用无需 GitHub 连接。
 默认安装到当前用户的应用目录，无需管理员权限；桌面快捷方式可选，默认不开机启动。
 卸载保留个人配置及录制缓存。文字识别依赖 Windows 已安装的 OCR 语言包。
@@ -65,11 +65,11 @@ UI 回归在独立 STA 进程中运行，检查截图输入捕获、原图裁切
 .\tools\build-installer.ps1 -MakeNsis 'C:\Tools\NSIS\makensis.exe'
 ```
 
-输出位于 `dist/0.5/release`，包含安装程序及 SHA-256 校验文件。
+输出位于 `dist/0.5.1/release`，包含安装程序及 SHA-256 校验文件。
 
-- `dist/0.5/lightweight`：依赖已安装的 .NET 10 Desktop Runtime x64，未附带 OCR 模型。
-- `dist/0.5/portable`：包含压缩的运行库，无需预装 .NET；首次启动会把所需组件释放到 .NET 缓存，磁盘实际占用大于 EXE 体积。
+- `dist/0.5.1/lightweight`：依赖已安装的 .NET 10 Desktop Runtime x64，未附带 OCR 模型。
+- `dist/0.5.1/portable`：包含压缩的运行库，无需预装 .NET；首次启动会把所需组件释放到 .NET 缓存，磁盘实际占用大于 EXE 体积。
 - `dist/win-x64`：旧版运行目录；本次新构建位于上述两个目录，退出旧版后运行新版。
-- 0.5 已加入系统内置 H.264 MP4 录制导出；文字识别继续使用 Windows OCR，换电脑时需安装所需的 OCR 语言包。
+- 0.5.1 已移除不可用的表格识别，并修复录屏结束后的窗口关闭异常；文字识别继续使用 Windows OCR，换电脑时需安装所需的 OCR 语言包。
 
 原版约 174 MB，主要体积来自自包含桌面运行库。发布不使用 WPF 不支持的激进裁剪，保证 XAML 和反射功能完整。

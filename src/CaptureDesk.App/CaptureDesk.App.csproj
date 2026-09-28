@@ -15,7 +15,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <Version>0.5</Version>
+    <Version>0.5.1</Version>
     <ApplicationIcon>Assets\Brand\CaptureDesk.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <!-- WPF owns application startup and DPI; WinForms is used only for the tray. -->
