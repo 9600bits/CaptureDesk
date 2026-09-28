@@ -19,18 +19,6 @@ internal static class SaveDialogHelper
         }, index => index == 2 ? ".jpg" : ".png", index => index == 2 ? [".jpg", ".jpeg"] : [".png"]);
     }
 
-    public static string? ShowTable(Window owner, string baseName)
-    {
-        return Show(owner, new Microsoft.Win32.SaveFileDialog
-        {
-            Filter = "Excel 工作簿|*.xlsx|CSV 表格|*.csv",
-            FilterIndex = 1,
-            DefaultExt = ".xlsx",
-            AddExtension = true,
-            FileName = Path.GetFileNameWithoutExtension(baseName)
-        }, index => index == 2 ? ".csv" : ".xlsx", index => index == 2 ? [".csv"] : [".xlsx"]);
-    }
-
     internal static string NormalizeExtension(string path, string expected, IReadOnlyCollection<string> accepted)
     {
         var extension = Path.GetExtension(path);

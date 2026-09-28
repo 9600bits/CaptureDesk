@@ -74,8 +74,7 @@ internal static class UiVerification
         var passed = new List<string>();
         Require(SaveDialogHelper.NormalizeExtension("capture.png", ".jpg", [".jpg", ".jpeg"]) == "capture.jpg", "JPEG filter did not replace a mismatched extension.");
         Require(SaveDialogHelper.NormalizeExtension("capture.JPEG", ".jpg", [".jpg", ".jpeg"]) == "capture.JPEG", "Accepted JPEG extension was changed.");
-        Require(SaveDialogHelper.NormalizeExtension("table.xlsx", ".csv", [".csv"]) == "table.csv", "CSV filter did not replace a mismatched extension.");
-        passed.Add("PASS save filters enforce matching image and table extensions");
+        passed.Add("PASS save filters enforce matching image extensions");
         var uiFont = (FontFamily)System.Windows.Application.Current.FindResource("UiFont");
         foreach (var weight in new[] { FontWeight.FromOpenTypeWeight(330), FontWeight.FromOpenTypeWeight(520) })
         {
@@ -241,7 +240,6 @@ internal static class UiVerification
         File.WriteAllLines(resultPath, passed);
         MediaVerification.Run(Path.GetDirectoryName(Path.GetFullPath(resultPath))!, passed);
         AnnotationVerification.Run(Path.GetDirectoryName(Path.GetFullPath(resultPath))!, passed);
-        StructuredRecognitionVerification.Run(Path.GetDirectoryName(Path.GetFullPath(resultPath))!, passed);
         File.WriteAllLines(resultPath, passed);
     }
 }

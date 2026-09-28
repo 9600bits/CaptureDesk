@@ -28,7 +28,6 @@
                     <Button Style="{StaticResource VectorToolButton}" Click="Output_Click" Tag="long" Content="{StaticResource LongCaptureIcon}" ToolTip="长截图（实时捕获当前区域）" AutomationProperties.Name="选区长截图" />
                     <Button Style="{StaticResource VectorToolButton}" Click="Output_Click" Tag="record" Content="{StaticResource VideoIcon}" ToolTip="屏幕录制（实时捕获当前区域）" AutomationProperties.Name="选区屏幕录制" />
                     <Button Style="{StaticResource VectorToolButton}" Click="Output_Click" Tag="ocr" Content="{StaticResource OcrIcon}" ToolTip="文字识别" AutomationProperties.Name="选区文字识别" />
-                    <Button Style="{StaticResource VectorToolButton}" Click="Output_Click" Tag="table" Content="{StaticResource TableIcon}" ToolTip="表格识别" AutomationProperties.Name="选区表格识别" />
                     <Border Width="1" Height="22" Margin="6,0" Background="{DynamicResource LineBrush}" />
                     <Button x:Name="InlineUndo" Style="{StaticResource VectorToolButton}" Click="Undo_Click" IsEnabled="False" Content="{StaticResource UndoIcon}" ToolTip="撤销（Ctrl+Z）" AutomationProperties.Name="撤销标注" />
                     <Button x:Name="InlineRedo" Style="{StaticResource VectorToolButton}" Click="Redo_Click" IsEnabled="False" Content="{StaticResource RedoIcon}" ToolTip="重做（Ctrl+Y）" AutomationProperties.Name="重做标注" />

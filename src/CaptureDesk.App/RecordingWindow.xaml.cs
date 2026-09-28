@@ -14,7 +14,7 @@ public partial class RecordingWindow : Window
     private LocalRecordingService? _service;
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromMilliseconds(100) };
     private CancellationTokenSource? _export;
-    private bool _allowClose, _stopping, _exporting;
+    private bool _allowClose, _closePending, _stopping, _exporting;
     public RecordingWindow() : this(default(CaptureRegion)) { }
     public RecordingWindow(string journal) : this(default(CaptureRegion))
     {
@@ -112,9 +112,27 @@ public partial class RecordingWindow : Window
         if (_exporting) { e.Cancel = true; _export?.Cancel(); StatusText.Text = "正在取消导出，请稍后关闭"; return; }
         if (_service is null) return;
         e.Cancel = true;
-        if (_stopping) return;
-        if (MessageBox.Show(this, "关闭录制？帧文件会保留，可从“恢复录制”继续导出。", "屏幕录制", MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
-        await FinishAsync(); _allowClose = true; Close();
+        if (_stopping || _closePending) return;
+        _closePending = true;
+        if (MessageBox.Show(this, "关闭录制？帧文件会保留，可从“恢复录制”继续导出。", "屏幕录制", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+        {
+            _closePending = false;
+            return;
+        }
+        try
+        {
+            await FinishAsync();
+            _allowClose = true;
+            // Closing is canceled above. Defer the second Close until the current
+            // Closing event has returned; calling Close inline can make WPF reject
+            // the operation as a reentrant window close.
+            await Dispatcher.InvokeAsync(Close, DispatcherPriority.Background);
+        }
+        catch (Exception ex)
+        {
+            _closePending = false;
+            StatusText.Text = ex.Message;
+        }
     }
 
     private static string FormatName(string path) => Path.GetExtension(path).Equals(".gif", StringComparison.OrdinalIgnoreCase) ? "GIF" : "MP4";

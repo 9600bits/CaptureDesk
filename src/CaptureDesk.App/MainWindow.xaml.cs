@@ -57,7 +57,6 @@ public partial class MainWindow : Window
             if (workflow == "ocr") { new RecognitionWindow(overlay.CapturedBytes).ShowDialog(); return; }
             if (workflow == "long") { new LongCaptureWindow(overlay.CapturedRegion).ShowDialog(); return; }
             if (workflow == "record") { new RecordingWindow(overlay.CapturedRegion).ShowDialog(); return; }
-            if (workflow == "table") { new StructuredRecognitionWindow(overlay.CapturedBytes).ShowDialog(); return; }
             App.History.Add(new CaptureResult(overlay.CapturedBytes, overlay.CapturedSource.PixelWidth, overlay.CapturedSource.PixelHeight, overlay.CapturedRegion));
             if (overlay.OutputAction == "copy") { Clipboard.SetImage(overlay.CapturedSource); return; }
             if (overlay.OutputAction == "pin") { new PinWindow(overlay.CapturedSource).Show(); return; }
