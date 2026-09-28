@@ -4,8 +4,8 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path $PSScriptRoot -Parent
-$payload = Join-Path $projectRoot 'dist\0.5.1\installer-payload'
-$output = Join-Path $projectRoot 'dist\0.5.1\release'
+$payload = Join-Path $projectRoot 'dist\0.5.2\installer-payload'
+$output = Join-Path $projectRoot 'dist\0.5.2\release'
 & $DotNet publish (Join-Path $projectRoot 'src\CaptureDesk.App\CaptureDesk.App.csproj') -p:PublishProfile=Installer
 if ($LASTEXITCODE -ne 0) { throw 'Publish failed' }
 New-Item -ItemType Directory -Path $output -Force | Out-Null
@@ -31,7 +31,7 @@ $lines += @(Get-ChildItem -LiteralPath $payload -Directory -Recurse | Sort-Objec
     'RMDir "$INSTDIR\' + [IO.Path]::GetRelativePath($payload, $_.FullName) + '"'
 })
 [IO.File]::WriteAllLines($manifest, $lines, [Text.UTF8Encoding]::new($true))
-$setup = Join-Path $output 'CaptureDesk-0.5.1-win-x64-setup.exe'
+$setup = Join-Path $output 'CaptureDesk-0.5.2-win-x64-setup.exe'
 & $MakeNsis /INPUTCHARSET UTF8 "/DPAYLOAD=$payload" "/DOUTPUT=$setup" "/DUNINSTALL_FILES=$manifest" (Join-Path $projectRoot 'installer\CaptureDesk.nsi')
 if ($LASTEXITCODE -ne 0) { throw 'Installer compilation failed' }
 $hash = (Get-FileHash -LiteralPath $setup -Algorithm SHA256).Hash.ToLowerInvariant()

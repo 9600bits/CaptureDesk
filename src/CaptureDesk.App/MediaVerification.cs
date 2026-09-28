@@ -78,16 +78,17 @@ internal static class MediaVerification
         var image = new RenderTargetBitmap(900, 150, 96, 96, PixelFormats.Pbgra32); image.Render(visual); image.Freeze();
         var png = PngCodec.Encode(image);
         var languages = LocalRecognitionProvider.Languages;
-        if (languages.Count > 0)
+        var installedLanguages = languages.Where(x => !x.Name.Contains("需安装", StringComparison.Ordinal)).ToArray();
+        if (installedLanguages.Length > 0)
         {
-            var language = languages.FirstOrDefault(x => x.Tag.StartsWith("en"));
-            if (language == default) language = languages[0];
+            var language = installedLanguages.FirstOrDefault(x => x.Tag.StartsWith("en", StringComparison.OrdinalIgnoreCase));
+            if (language == default) language = installedLanguages[0];
             var result = Task.Run(() => new LocalRecognitionProvider().RecognizeAsync(new RecognitionRequest(png, language.Tag))).GetAwaiter().GetResult();
             Require(result.Status == FeatureAvailability.Available && result.Text.Contains("12345"), "OCR live recognition failed: " + result.Detail + " / " + result.Text);
             passed.Add("PASS Windows OCR recognizes test image: " + result.Text);
         }
         else passed.Add("SKIP OCR success: no Windows language pack installed");
-        var available = languages.Select(x => x.Tag).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var available = installedLanguages.Select(x => x.Tag).ToHashSet(StringComparer.OrdinalIgnoreCase);
         var absent = new[] { "ja-JP", "ko-KR", "ar-SA", "ru-RU" }.FirstOrDefault(x => !available.Contains(x));
         if (absent is not null)
         {
